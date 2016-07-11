@@ -1313,11 +1313,10 @@ static void prplcb_roomlist_set_fields(PurpleRoomlist *list, GList *fields)
 	for (i = 0, l = fields; l; i++, l = l->next) {
 		field = l->data;
 
-		if ((g_strcasecmp(field->name, "description") == 0) ||
-		    (g_strcasecmp(field->name, "topic") == 0)) {
-			if (field->type == PURPLE_ROOMLIST_FIELD_STRING) {
-				rld->topic = i;
-			}
+		/* Assume the first string field is the topic */
+		if ((i != 0) && (rld->topic < 0) &&
+		    (field->type == PURPLE_ROOMLIST_FIELD_STRING)) {
+			rld->topic = i;
 		} else if (g_strcasecmp(field->name, "users") == 0) {
 			if (field->type == PURPLE_ROOMLIST_FIELD_INT) {
 				rld->userc = i;
