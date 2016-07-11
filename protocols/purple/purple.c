@@ -749,9 +749,14 @@ struct groupchat *purple_chat_join(struct im_connection *ic, const char *room, c
 
 void purple_chat_list(struct im_connection *ic, const char *server)
 {
+	PurpleRoomlist *list;
 	struct purple_data *pd = ic->proto_data;
 
-	purple_roomlist_get_list(pd->account->gc);
+	list = purple_roomlist_get_list(pd->account->gc);
+
+	if (list == NULL) {
+		imcb_log(ic, "Room listing unsupported by this purple plugin");
+	}
 }
 
 void purple_transfer_request(struct im_connection *ic, file_transfer_t *ft, char *handle);
